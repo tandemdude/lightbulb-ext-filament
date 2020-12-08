@@ -1,7 +1,10 @@
 import ast
+import asyncio
 import contextlib
 import io
+import os
 import re
+import shutil
 import sys
 import textwrap
 import time
@@ -12,7 +15,7 @@ import lightbulb
 
 __all__: typing.Final[typing.List[str]] = ["SuperUser", "load", "unload"]
 
-
+SHELL = os.getenv("SHELL", os.name in ("win32", "win64", "winnt", "nt") and "cmd" or "bash")
 CODEBLOCK_REGEX: typing.Final[typing.Pattern[str]] = re.compile(
     r"```(?P<lang>[a-zA-Z0-9]*)\s(?P<code>[\s\S(^\\`{3})]*?)\s*```"
 )
@@ -22,6 +25,9 @@ LANGUAGES: typing.Final[typing.Mapping[str, str]] = {
     "python": "python",
     "python3": "python",
     "py3": "python",
+    "shell": SHELL,
+    "sh": SHELL,
+    "bash": SHELL,
 }
 
 
@@ -73,20 +79,36 @@ async def execute_in_session(ctx: lightbulb.Context, program: str, code: str):
     )
 
 
+async def execute_in_shell(_: lightbulb.Context, program: str, code: str):
+    path = shutil.which(program)
+    if not path:
+        return "", f"{program} not found.", 127, 0.0, ""
+
+    start_time = time.monotonic()
+    process = await asyncio.create_subprocess_exec(
+        path,
+        "--",
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+        stdin=asyncio.subprocess.PIPE,
+    )
+
+    sout, serr = await process.communicate(bytes(code, "utf-8"))
+    exec_time = time.monotonic() - start_time
+
+    exit_code = process.returncode
+
+    sout = sout.decode()
+    serr = serr.decode()
+
+    return sout, serr, str(exit_code), exec_time, path
+
+
 class SuperUser(lightbulb.Plugin):
-    @lightbulb.owner_only()
-    @lightbulb.command(name="exec", aliases=["eval"])
-    async def _exec(self, ctx: lightbulb.Context, *, code: str):
-        if code.startswith("```"):
-            match = CODEBLOCK_REGEX.match(code)
-            lang, code = LANGUAGES[match.group("lang")], match.group("code")
-        else:
-            lang = "python"
+    def __init__(self):
+        super().__init__()
 
-        sout, serr, result, exec_time, prog = await execute_in_session(ctx, lang, code)
-
-        pag = lightbulb.utils.StringPaginator(prefix="```diff\n", suffix="```")
-
+    def _paginate_output(self, pag, sout, serr, result, exec_time, prog):
         pag.add_line(f"---- {prog} ----")
         if sout:
             pag.add_line("- /dev/stdout:")
@@ -94,8 +116,25 @@ class SuperUser(lightbulb.Plugin):
         if serr:
             pag.add_line("- /dev/stderr:")
             pag.add_line(serr)
-        pag.add_line(f"+ Returned {result} in approx {(exec_time*1000):.2f}ms")
+        pag.add_line(f"+ Returned {result} in approx {(exec_time * 1000):.2f}ms")
 
+    @lightbulb.owner_only()
+    @lightbulb.command(name="exec", aliases=["eval", "shell", "sh"])
+    async def execute(self, ctx: lightbulb.Context, *, code: str):
+        if code.startswith("```"):
+            match = CODEBLOCK_REGEX.match(code)
+            lang, code = LANGUAGES[match.group("lang")], match.group("code")
+        else:
+            if ctx.invoked_with in ["shell", "sh"]:
+                lang = SHELL
+            else:
+                lang = "python"
+
+        executor = execute_in_session if lang == "python" else execute_in_shell
+        sout, serr, result, exec_time, prog = await executor(ctx, lang, code)
+
+        pag = lightbulb.utils.StringPaginator(prefix="```diff\n", suffix="```")
+        self._paginate_output(pag, sout, serr, result, exec_time, prog)
         nav = lightbulb.utils.StringNavigator(pag.build_pages())
         await nav.run(ctx)
 
