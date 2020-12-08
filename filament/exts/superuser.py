@@ -75,7 +75,7 @@ async def execute_in_session(ctx: lightbulb.Context, program: str, code: str):
 
 class SuperUser(lightbulb.Plugin):
     @lightbulb.owner_only()
-    @lightbulb.command(name="exec", aliases=[""])
+    @lightbulb.command(name="exec", aliases=["eval"])
     async def _exec(self, ctx: lightbulb.Context, *, code: str):
         if code.startswith("```"):
             match = CODEBLOCK_REGEX.match(code)
