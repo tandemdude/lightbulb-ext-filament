@@ -1,1 +1,1 @@
-hikari-lightbulb~=0.0.56
+hikari-lightbulb~=1.4.0
