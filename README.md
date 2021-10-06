@@ -2,8 +2,6 @@
 
 Various add-ons, extensions and utilities for [hikari-lightbulb](https://github.com/tandemdude/hikari-lightbulb/)
 
-Documentation coming soon
-
 ## Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Filament.
@@ -27,4 +25,4 @@ it is greatly appreciated and lets me know that I'm going in the right direction
 
 ## Links
 - **Repository:** [GitHub](https://github.com/tandemdude/filament)
-- **Documentation:** ~~coming soon~~
+- **Documentation:** [Read Here](https://filament.readthedocs.io/en/latest/)

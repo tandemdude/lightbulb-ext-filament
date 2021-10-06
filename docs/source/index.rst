@@ -12,8 +12,6 @@ Filament
 
 Various add-ons, extensions and utilities for `hikari-lightbulb <https://github.com/tandemdude/hikari-lightbulb/>`_
 
-Documentation coming soon
-
 Installation
 ============
 
@@ -45,7 +43,7 @@ Links
 
 **Repository:** `GitHub <https://github.com/tandemdude/filament>`_
 
-**Documentation:** coming soon
+**Documentation:** `View Here <https://filament.readthedocs.io/en/latest/>`_
 
 **Index:**
 
