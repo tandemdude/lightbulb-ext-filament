@@ -1,3 +1,20 @@
+# -*- coding: utf-8 -*-
+# Copyright © tandemdude 2020-present
+#
+# This file is part of Filament.
+#
+# Filament is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Filament is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with Filament. If not, see <https://www.gnu.org/licenses/>.
 import ast
 import asyncio
 import contextlib
@@ -8,8 +25,8 @@ import shutil
 import sys
 import textwrap
 import time
-import typing
 import traceback
+import typing
 
 import lightbulb
 
@@ -43,9 +60,7 @@ async def execute_in_session(ctx: lightbulb.Context, program: str, code: str):
             start_time = float("nan")
             try:
                 try:
-                    abstract_syntax_tree = ast.parse(
-                        code, filename=f"{ctx.guild_id}_{ctx.channel_id}.py"
-                    )
+                    abstract_syntax_tree = ast.parse(code, filename=f"{ctx.guild_id}_{ctx.channel_id}.py")
 
                     node: list = abstract_syntax_tree.body
 
@@ -118,7 +133,7 @@ class SuperUser(lightbulb.Plugin):
             pag.add_line(serr)
         pag.add_line(f"+ Returned {result} in approx {(exec_time * 1000):.2f}ms")
 
-    @lightbulb.owner_only()
+    @lightbulb.check(lightbulb.owner_only)
     @lightbulb.command(name="exec", aliases=["eval", "shell", "sh"])
     async def execute(self, ctx: lightbulb.Context, *, code: str):
         if code.startswith("```"):
