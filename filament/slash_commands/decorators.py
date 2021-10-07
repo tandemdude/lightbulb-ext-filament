@@ -86,7 +86,7 @@ def with_option(
     def decorate(cmd: commands._SlashCommand) -> commands._SlashCommand:
         nonlocal type, choices
 
-        required = typing.get_origin(type) is typing.Union and None.__class__ in type
+        required = not (typing.get_origin(type) is typing.Union and None.__class__ in type)
         type = OPTION_TYPE_MAPPING[typing.get_args(type)[0] if typing.get_origin(type) is typing.Union else type]
         choices = _get_choice_objects_from_choices(choices) if choices is not None else []
 

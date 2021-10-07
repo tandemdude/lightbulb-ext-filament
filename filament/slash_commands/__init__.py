@@ -18,23 +18,13 @@
 """
 An alternative, decorator-based implementation of slash commands as opposed to the class-based
 system provided by hikari-lightbulb.
-
-Currently supported:
-
-- Top level slash commands
-- Slash command options
-- Slash command checks
-
-Support planned:
-
-- Slash command groups
-- Slash command subgroups
-- Slash command subcommands
-
 """
+from filament.slash_commands import commands
 from filament.slash_commands import decorators
+from filament.slash_commands.commands import *
 from filament.slash_commands.decorators import *
 
 __all__ = [
     *decorators.__all__,
+    *commands.__all__,
 ]
