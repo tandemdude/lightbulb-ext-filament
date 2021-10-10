@@ -26,14 +26,21 @@ from filament.slash_commands import commands
 __all__ = ["slash_command", "with_option", "with_checks"]
 
 
-def slash_command(*, description: str, name: str = None, guilds: typing.Optional[typing.Iterable[int]] = None):
+def slash_command(
+    *,
+    description: str,
+    name: typing.Optional[str] = None,
+    guilds: typing.Optional[typing.Union[typing.Sequence[int], int]] = None,
+):
     """
     Decorator that turns an async function into a slash command object.
 
     Keyword Args:
-        description: The description of the slash command.
-        name: The name of the slash command. Defaults to the decorated function's name in lowercase.
-        guilds: The guilds that the command should be created in. Defaults to ``None`` (global command).
+        description (:obj:`str`): The description of the slash command.
+        name (Optional[:obj:`str`]): The name of the slash command. Defaults to the decorated function's name in
+            lowercase.
+        guilds (Optional[Union[Sequence[:obj:`int`], :obj:`int`]]): The guilds that the command should be created in.
+            Defaults to ``None`` (global command).
 
     Example:
 
@@ -46,6 +53,9 @@ def slash_command(*, description: str, name: str = None, guilds: typing.Optional
 
     def decorate(func) -> commands._SlashCommand:
         nonlocal name, guilds
+
+        if isinstance(guilds, int):
+            guilds = [guilds]
 
         name = (name or func.__name__).lower()
         guilds = guilds if guilds is not None else []

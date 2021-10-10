@@ -265,17 +265,18 @@ class _SlashCommand(lightbulb.SlashCommand):
 
 
 def slash_command_group(
-    name: str, *, description: str, guilds: typing.Optional[hikari.SnowflakeishSequence] = None
+    name: str, *, description: str, guilds: typing.Optional[typing.Union[typing.Sequence[int], int]] = None
 ) -> _SlashCommandGroup:
     """
     Creates a slash command group object that subcommands and subgroups can be bound to.
 
     Args:
-        name: The name of the slash command group.
+        name (:obj:`str`): The name of the slash command group.
 
     Keyword Args:
-        description: The description of the slash command group.
-        guilds: The guilds that the command should be created in. Defaults to ``None`` (global command).
+        description (:obj:`str`): The description of the slash command group.
+        guilds (Optional[Union[Sequence[int], int]]): The guilds that the command should be created in.
+            Defaults to ``None`` (global command).
 
     Returns:
         Created slash command group object.
@@ -286,6 +287,9 @@ def slash_command_group(
 
             group = filament.slash_command_group("foo", description="test group")
     """
+    if isinstance(guilds, int):
+        guilds = [guilds]
+
     return _SlashCommandGroup(
         name,
         description,
