@@ -60,18 +60,21 @@ def with_option(
     type: typing.Type,
     name: str,
     description: str,
-    default: typing.Any = None,
-    choices: typing.Sequence[typing.Any] = None,
+    required: typing.Optional[bool] = None,
+    default: typing.Optional[typing.Any] = None,
+    choices: typing.Optional[typing.Sequence[typing.Any]] = None,
 ):
     """
     Decorator that adds an option to a slash command.
 
     Keyword Args:
-        type: The type of the option.
-        name: The name of the option.
-        description: The description of the option.
-        default: The default value for the option. Defaults to ``None``.
-        choices: The choices for the option. Defaults to ``None`` (no choices).
+        type (:obj:`typing.Type`): The type of the option.
+        name (:obj:`str`): The name of the option.
+        description (:obj:`str`): The description of the option.
+        required (Optional[:obj:`bool`]): Whether or not the argument is required. If not provided then this
+            will be inferred from the option's type.
+        default (Optional[:obj:`typing.Any`]): The default value for the option. Defaults to ``None``.
+        choices (Optional[Sequence]): The choices for the option. Defaults to ``None`` (no choices).
 
     Example:
 
@@ -81,12 +84,25 @@ def with_option(
             @filament.slash_command(description="Repeats the input from the user")
             async def echo(context):
                 await context.respond(context.options.text)
+
+    See Also:
+
+        - `Lightbulb option types <https://hikari-lightbulb.readthedocs.io/en/latest/slash-commands.html#slash-command-option-typehints>`_ for
+          information about what types are accepted in the ``type`` argument.
+        - `Lightbulb option choices <https://hikari-lightbulb.readthedocs.io/en/latest/slash-commands.html#lightbulb.slash_commands.Option.choices>`_ for
+          information about how to define choices for options.
     """
 
-    def decorate(cmd: commands._SlashCommand) -> commands._SlashCommand:
-        nonlocal type, choices
+    def decorate(
+        cmd: typing.Union[commands._SlashCommand, commands._SlashSubCommand]
+    ) -> typing.Union[commands._SlashCommand, commands._SlashSubCommand]:
+        nonlocal type, choices, required
 
-        required = not (typing.get_origin(type) is typing.Union and None.__class__ in type)
+        required = (
+            not (typing.get_origin(type) is typing.Union and None.__class__ in typing.get_args(type))
+            if required is None
+            else required
+        )
         type = OPTION_TYPE_MAPPING[typing.get_args(type)[0] if typing.get_origin(type) is typing.Union else type]
         choices = _get_choice_objects_from_choices(choices) if choices is not None else []
 
@@ -124,7 +140,9 @@ def with_checks(check1, *checks):
                 await context.respond("Pong!")
     """
 
-    def decorate(cmd: commands._SlashCommand) -> commands._SlashCommand:
+    def decorate(
+        cmd: typing.Union[commands._SlashCommand, commands._SlashSubCommand]
+    ) -> typing.Union[commands._SlashCommand, commands._SlashSubCommand]:
         for check in [check1, *checks]:
             cmd.add_check(check)
         return cmd
