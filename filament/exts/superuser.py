@@ -30,15 +30,13 @@ import typing as t
 
 import lightbulb
 from lightbulb import commands
-from lightbulb.utils import pag
 from lightbulb.utils import nav
+from lightbulb.utils import pag
 
 __all__: t.Final[t.List[str]] = ["load", "unload"]
 
 SHELL = os.getenv("SHELL", os.name in ("win32", "win64", "winnt", "nt") and "cmd" or "bash")
-CODEBLOCK_REGEX: t.Final[t.Pattern[str]] = re.compile(
-    r"```(?P<lang>[a-zA-Z0-9]*)\s(?P<code>[\s\S(^\\`{3})]*?)\s*```"
-)
+CODEBLOCK_REGEX: t.Final[t.Pattern[str]] = re.compile(r"```(?P<lang>[a-zA-Z0-9]*)\s(?P<code>[\s\S(^\\`{3})]*?)\s*```")
 LANGUAGES: t.Final[t.Mapping[str, str]] = {
     "": "python",
     "py": "python",

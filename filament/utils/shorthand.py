@@ -29,6 +29,7 @@ def prefix_command(name: str, description: str, **kwargs: t.Any):
     def decorate(func) -> commands.CommandLike:
         func = decorators.implements(commands.PrefixCommand)(func)
         return decorators.command(name, description, **kwargs)(func)
+
     return decorate
 
 
@@ -36,6 +37,7 @@ def slash_command(name: str, description: str, **kwargs: t.Any):
     def decorate(func) -> commands.CommandLike:
         func = decorators.implements(commands.SlashCommand)(func)
         return decorators.command(name, description, **kwargs)(func)
+
     return decorate
 
 
@@ -43,4 +45,5 @@ def prefix_slash_command(name: str, description: str, **kwargs: t.Any):
     def decorate(func) -> commands.CommandLike:
         func = decorators.implements(commands.SlashCommand, commands.PrefixCommand)(func)
         return decorators.command(name, description, **kwargs)(func)
+
     return decorate

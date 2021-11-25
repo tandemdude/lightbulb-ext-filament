@@ -25,4 +25,5 @@ from lightbulb import context
 def pass_options(func):
     async def decorated(ctx: context.Context) -> None:
         await func(ctx, **ctx.raw_options)
+
     return decorated

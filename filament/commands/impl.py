@@ -42,10 +42,12 @@ option = opt
 
 
 class CommandLike(abc.ABC):
-    _subcommands: t.Dict[t.Type[CommandLike], t.Sequence[t.Type[CommandLike]]] = collections.defaultdict(list)
+    _subcommands: t.Dict[t.Type[CommandLike], t.List[t.Type[CommandLike]]] = collections.defaultdict(list)
     _error_handlers: t.Dict[t.Type[CommandLike], t.Callable[[context.Context], t.Coroutine[t.Any, t.Any, bool]]] = {}
     _help_getters: t.Dict[t.Type[CommandLike], t.Callable[[commands.Command, context.Context], str]] = {}
-    _check_exempts: t.Dict[t.Type[CommandLike], t.Callable[[context.Context], t.Union[bool, t.Coroutine[t.Any, t.Any, bool]]]] = {}
+    _check_exempts: t.Dict[
+        t.Type[CommandLike], t.Callable[[context.Context], t.Union[bool, t.Coroutine[t.Any, t.Any, bool]]]
+    ] = {}
 
     def __new__(cls, *args: t.Any, **kwargs: t.Any) -> commands.CommandLike:
         new = super().__new__(cls, *args, **kwargs)
@@ -83,7 +85,7 @@ class CommandLike(abc.ABC):
             self.ephemeral,
             self._check_exempts.get(self.__class__),
             self.hidden,
-            self.inherit_checks
+            self.inherit_checks,
         )
 
     @property
@@ -139,3 +141,17 @@ class CommandLike(abc.ABC):
 
     async def callback(self, ctx: context.Context) -> None:
         pass
+
+    @classmethod
+    def child(
+        cls, other: t.Optional[t.Type[CommandLike]] = None
+    ) -> t.Union[t.Type[CommandLike], t.Callable[[t.Type[CommandLike]], t.Type[CommandLike]]]:
+        if other is not None:
+            CommandLike._subcommands[cls].append(other)
+            return other
+
+        def decorate(other_: t.Type[CommandLike]) -> t.Type[CommandLike]:
+            CommandLike._subcommands[cls].append(other_)
+            return other_
+
+        return decorate

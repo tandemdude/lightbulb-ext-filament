@@ -15,8 +15,8 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with Filament. If not, see <https://www.gnu.org/licenses/>.
-from filament import utils
 from filament import commands
+from filament import utils
 from filament.commands import *
 
 __version__ = "0.1.0"
