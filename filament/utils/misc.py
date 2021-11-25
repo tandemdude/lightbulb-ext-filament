@@ -15,8 +15,14 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with Filament. If not, see <https://www.gnu.org/licenses/>.
-from filament import utils
-from filament import commands
-from filament.commands import *
+from __future__ import annotations
 
-__version__ = "0.1.0"
+__all__ = ["pass_options"]
+
+from lightbulb import context
+
+
+def pass_options(func):
+    async def decorated(ctx: context.Context) -> None:
+        await func(ctx, **ctx.raw_options)
+    return decorated

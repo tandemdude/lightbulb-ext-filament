@@ -26,17 +26,20 @@ import sys
 import textwrap
 import time
 import traceback
-import typing
+import typing as t
 
 import lightbulb
+from lightbulb import commands
+from lightbulb.utils import pag
+from lightbulb.utils import nav
 
-__all__: typing.Final[typing.List[str]] = ["SuperUser", "load", "unload"]
+__all__: t.Final[t.List[str]] = ["load", "unload"]
 
 SHELL = os.getenv("SHELL", os.name in ("win32", "win64", "winnt", "nt") and "cmd" or "bash")
-CODEBLOCK_REGEX: typing.Final[typing.Pattern[str]] = re.compile(
+CODEBLOCK_REGEX: t.Final[t.Pattern[str]] = re.compile(
     r"```(?P<lang>[a-zA-Z0-9]*)\s(?P<code>[\s\S(^\\`{3})]*?)\s*```"
 )
-LANGUAGES: typing.Final[typing.Mapping[str, str]] = {
+LANGUAGES: t.Final[t.Mapping[str, str]] = {
     "": "python",
     "py": "python",
     "python": "python",
@@ -48,7 +51,7 @@ LANGUAGES: typing.Final[typing.Mapping[str, str]] = {
 }
 
 
-async def execute_in_session(ctx: lightbulb.Context, program: str, code: str):
+async def execute_in_session(ctx: lightbulb.context.Context, program: str, code: str):
     sout = io.StringIO()
     serr = io.StringIO()
 
@@ -94,7 +97,7 @@ async def execute_in_session(ctx: lightbulb.Context, program: str, code: str):
     )
 
 
-async def execute_in_shell(_: lightbulb.Context, program: str, code: str):
+async def execute_in_shell(_: lightbulb.context.Context, program: str, code: str):
     path = shutil.which(program)
     if not path:
         return "", f"{program} not found.", 127, 0.0, ""
@@ -119,44 +122,45 @@ async def execute_in_shell(_: lightbulb.Context, program: str, code: str):
     return sout, serr, str(exit_code), exec_time, path
 
 
-class SuperUser(lightbulb.Plugin):
-    def __init__(self):
-        super().__init__()
+def _paginate_output(pag_, sout, serr, result, exec_time, prog):
+    pag_.add_line(f"---- {prog} ----")
+    if sout:
+        pag_.add_line("- /dev/stdout:")
+        pag_.add_line(sout)
+    if serr:
+        pag_.add_line("- /dev/stderr:")
+        pag_.add_line(serr)
+    pag_.add_line(f"+ Returned {result} in approx {(exec_time * 1000):.2f}ms")
 
-    def _paginate_output(self, pag, sout, serr, result, exec_time, prog):
-        pag.add_line(f"---- {prog} ----")
-        if sout:
-            pag.add_line("- /dev/stdout:")
-            pag.add_line(sout)
-        if serr:
-            pag.add_line("- /dev/stderr:")
-            pag.add_line(serr)
-        pag.add_line(f"+ Returned {result} in approx {(exec_time * 1000):.2f}ms")
 
-    @lightbulb.check(lightbulb.owner_only)
-    @lightbulb.command(name="exec", aliases=["eval", "shell", "sh"])
-    async def execute(self, ctx: lightbulb.Context, *, code: str):
-        if code.startswith("```"):
-            match = CODEBLOCK_REGEX.match(code)
-            lang, code = LANGUAGES[match.group("lang")], match.group("code")
+@lightbulb.add_checks(lightbulb.owner_only)
+@lightbulb.option("code", "Code to evaluate", modifier=commands.OptionModifier.CONSUME_REST)
+@lightbulb.command("exec", "Evaluates the given python or shell code", aliases=["eval", "shell", "sh"])
+@lightbulb.implements(commands.PrefixCommand)
+async def execute(ctx: lightbulb.context.Context):
+    code = ctx.options.code
+
+    if code.startswith("```"):
+        match = CODEBLOCK_REGEX.match(code)
+        lang, code = LANGUAGES[match.group("lang")], match.group("code")
+    else:
+        if ctx.invoked_with in ["shell", "sh"]:
+            lang = SHELL
         else:
-            if ctx.invoked_with in ["shell", "sh"]:
-                lang = SHELL
-            else:
-                lang = "python"
+            lang = "python"
 
-        executor = execute_in_session if lang == "python" else execute_in_shell
-        sout, serr, result, exec_time, prog = await executor(ctx, lang, code)
+    executor = execute_in_session if lang == "python" else execute_in_shell
+    sout, serr, result, exec_time, prog = await executor(ctx, lang, code)
 
-        pag = lightbulb.utils.StringPaginator(prefix="```diff\n", suffix="```")
-        self._paginate_output(pag, sout, serr, result, exec_time, prog)
-        nav = lightbulb.utils.StringNavigator(pag.build_pages())
-        await nav.run(ctx)
+    pag_ = pag.StringPaginator(prefix="```diff\n", suffix="```")
+    _paginate_output(pag_, sout, serr, result, exec_time, prog)
+    nav_ = nav.ButtonNavigator(pag_.build_pages())
+    await nav_.run(ctx)
 
 
-def load(bot: lightbulb.Bot):
-    bot.add_plugin(SuperUser())
+def load(bot: lightbulb.BotApp):
+    bot.command(execute)
 
 
-def unload(bot: lightbulb.Bot):
-    bot.remove_plugin("SuperUser")
+def unload(bot: lightbulb.BotApp):
+    bot.remove_command(bot.get_prefix_command("exec"))
