@@ -15,5 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with Filament. If not, see <https://www.gnu.org/licenses/>.
+from filament.utils import misc
+from filament.utils import shorthand
 from filament.utils.misc import *
 from filament.utils.shorthand import *

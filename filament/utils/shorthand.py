@@ -26,6 +26,19 @@ from lightbulb import decorators
 
 
 def prefix_command(name: str, description: str, **kwargs: t.Any):
+    """
+    Shorthand decorator allowing you to easily define a prefix command. This decorator
+    takes the same arguments as :obj:`lightbulb.decorators.command`.
+
+    Example:
+
+        .. code-block:: python
+
+            @filament.utils.prefix_command("foo", "test command")
+            async def foo(ctx):
+                ...
+    """
+
     def decorate(func) -> commands.CommandLike:
         func = decorators.implements(commands.PrefixCommand)(func)
         return decorators.command(name, description, **kwargs)(func)
@@ -34,6 +47,19 @@ def prefix_command(name: str, description: str, **kwargs: t.Any):
 
 
 def slash_command(name: str, description: str, **kwargs: t.Any):
+    """
+    Shorthand decorator allowing you to easily define a slash command. This decorator
+    takes the same arguments as :obj:`lightbulb.decorators.command`.
+
+    Example:
+
+        .. code-block:: python
+
+            @filament.utils.slash_command("foo", "test command")
+            async def foo(ctx):
+                ...
+    """
+
     def decorate(func) -> commands.CommandLike:
         func = decorators.implements(commands.SlashCommand)(func)
         return decorators.command(name, description, **kwargs)(func)
@@ -42,6 +68,19 @@ def slash_command(name: str, description: str, **kwargs: t.Any):
 
 
 def prefix_slash_command(name: str, description: str, **kwargs: t.Any):
+    """
+    Shorthand decorator allowing you to easily define a prefix and slash command. This decorator
+    takes the same arguments as :obj:`lightbulb.decorators.command`.
+
+    Example:
+
+        .. code-block:: python
+
+            @filament.utils.prefix_slash_command("foo", "test command")
+            async def foo(ctx):
+                ...
+    """
+
     def decorate(func) -> commands.CommandLike:
         func = decorators.implements(commands.SlashCommand, commands.PrefixCommand)(func)
         return decorators.command(name, description, **kwargs)(func)

@@ -20,4 +20,4 @@ is fundamentally unsafe.
 
 .. code-block:: python
 
-    bot.load_extension("filament.exts.superuser")
+    bot.load_extensions("filament.exts.superuser")
