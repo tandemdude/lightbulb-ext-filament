@@ -4,19 +4,18 @@
    contain the root `toctree` directive. REMEMBER TO FIX BADGES
 
 .. |b1| image:: https://img.shields.io/badge/code%20style-black-000000.svg
-.. |b2| image:: https://img.shields.io/pypi/v/hikari-lightbulb.svg
-.. |b3| image:: https://img.shields.io/pypi/pyversions/hikari-lightbulb
+.. |b2| image:: https://img.shields.io/pypi/v/lightbulb-filament.svg
+.. |b3| image:: https://img.shields.io/pypi/pyversions/lightbulb-filament
 .. |b5| image:: https://img.shields.io/readthedocs/filament
 .. |b6| image:: https://img.shields.io/badge/license-LGPL--3.0-brightgreen
 .. |b7| image:: https://img.shields.io/github/stars/tandemdude/filament
 .. |b8| image:: https://img.shields.io/github/forks/tandemdude/filament
-.. |b9| image:: https://img.shields.io/pypi/status/hikari-lightbulb
-.. |b10| image:: https://img.shields.io/badge/mypy-checked-black
+.. |b9| image:: https://img.shields.io/pypi/status/lightbulb-filament
 
 Filament
 ========
 
-|b1| |b10|
+|b1|
 
 |b2| |b3| |b7| |b8|
 
