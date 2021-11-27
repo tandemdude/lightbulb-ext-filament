@@ -99,6 +99,7 @@ subcommand class **must** implement the appropriate command type, which in this 
     from lightbulb import commands
     import filament
 
+    @FooGroup.child
     class BarSubcommand(filament.CommandLike):
         # Define that this command implements SlashSubCommand
         implements = [commands.SlashSubCommand]
