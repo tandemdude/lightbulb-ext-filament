@@ -10,6 +10,12 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Filamen
 pip install lightbulb-filament
 ```
 
+or
+
+```bash
+pip install hikari-lightbulb[filament]
+```
+
 ## Issues
 If you find any bugs, issues, or unexpected behaviour while using the library, 
 you should open an issue with details of the problem and how to reproduce if possible. 

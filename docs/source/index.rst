@@ -33,7 +33,13 @@ Use the package manager `pip <https://pip.pypa.io/en/stable/>`_ to install Filam
 
 .. code-block:: bash
 
-   pip install git+https://github.com/tandemdude/filament.git
+   pip install lightbulb-filament
+
+or
+
+.. code-block:: bash
+
+   pip install hikari-lightbulb[filament]
 
 Issues
 ======

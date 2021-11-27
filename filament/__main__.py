@@ -15,8 +15,8 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with Filament. If not, see <https://www.gnu.org/licenses/>.
-import sys
 import importlib
+import sys
 
 import filament
 
