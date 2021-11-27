@@ -7,7 +7,7 @@ Various add-ons, extensions and utilities for [hikari-lightbulb](https://github.
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Filament.
 
 ```bash
-pip install git+https://github.com/tandemdude/filament.git
+pip install lightbulb-filament
 ```
 
 ## Issues
