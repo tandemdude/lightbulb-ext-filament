@@ -112,6 +112,10 @@ subcommand class **must** implement the appropriate command type, which in this 
             # Just send a simple message to the invocation context so we know the command worked
             await ctx.respond("foo bar")
 
+.. note::
+    When adding the command to the bot, you must pass an **instance** of the command class instead of
+    the class itself. E.g. ``bot.command(FooGroup())`` **not** ``bot.command(FooGroup)``.
+
 ----
 
 API Reference
