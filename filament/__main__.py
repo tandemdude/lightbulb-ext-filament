@@ -15,8 +15,10 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with Filament. If not, see <https://www.gnu.org/licenses/>.
-from filament import commands
-from filament import utils
-from filament.commands import *
+import sys
+import importlib
 
-__version__ = "0.0.1"
+import filament
+
+sys.stderr.write(f"lightbulb-filament ({filament.__version__})\n")
+importlib.import_module("lightbulb.__main__")

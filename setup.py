@@ -52,7 +52,7 @@ def parse_requirements_file(path):
 meta = parse_meta()
 
 setup(
-    name="filament",
+    name="lightbulb-filament",
     version=meta.version,
     description="Various add-ons, extensions and utilities for hikari-lightbulb",
     long_description=long_description(),
@@ -61,6 +61,7 @@ setup(
     author_email="tandemdude1@gmail.com",
     url="https://github.com/tandemdude/filament",
     packages=find_namespace_packages(include=[name + "*"]),
+    license="LGPL-3.0-ONLY",
     install_requires=parse_requirements_file("requirements.txt"),
     python_requires=">=3.8.0,<3.11",
     classifiers=[
@@ -68,10 +69,14 @@ setup(
         "Framework :: AsyncIO",
         "Intended Audience :: Developers",
         "Natural Language :: English",
+        "Topic :: Software Development :: Libraries :: Python Modules",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: 3 :: Only",
+        "Topic :: Software Development :: Libraries",
+        "Topic :: Software Development :: Libraries :: Application Frameworks",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
 )

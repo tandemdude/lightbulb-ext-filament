@@ -6,7 +6,6 @@
 .. |b1| image:: https://img.shields.io/badge/code%20style-black-000000.svg
 .. |b2| image:: https://img.shields.io/pypi/v/hikari-lightbulb.svg
 .. |b3| image:: https://img.shields.io/pypi/pyversions/hikari-lightbulb
-.. |b4| image:: https://github.com/tandemdude/filament/actions/workflows/ci.yml/badge.svg?branch=master&event=push
 .. |b5| image:: https://img.shields.io/readthedocs/filament
 .. |b6| image:: https://img.shields.io/badge/license-LGPL--3.0-brightgreen
 .. |b7| image:: https://img.shields.io/github/stars/tandemdude/filament
@@ -21,7 +20,7 @@ Filament
 
 |b2| |b3| |b7| |b8|
 
-|b4| |b5| |b6| |b9|
+|b5| |b6| |b9|
 
 ----
 

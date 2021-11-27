@@ -229,3 +229,62 @@ class CommandLike(abc.ABC):
             return other_
 
         return decorate
+
+    @classmethod
+    def set_error_handler(
+        cls, other: t.Optional[t.Callable[[context.Context], t.Coroutine[t.Any, t.Any, bool]]] = None
+    ) -> t.Union[
+        t.Callable[[context.Context], t.Coroutine[t.Any, t.Any, bool]],
+        t.Callable[
+            [t.Callable[[context.Context], t.Coroutine[t.Any, t.Any, bool]]],
+            t.Callable[[context.Context], t.Coroutine[t.Any, t.Any, bool]],
+        ],
+    ]:
+        """
+        Registers a coroutine function as an error handler for this command. This can be used as a first or
+        second order decorator, or called manually with the function to register.
+        """
+        if other is not None:
+            CommandLike._error_handlers[cls] = other
+            return other
+
+        def decorate(
+            other_: t.Callable[[context.Context], t.Coroutine[t.Any, t.Any, bool]]
+        ) -> t.Callable[[context.Context], t.Coroutine[t.Any, t.Any, bool]]:
+            CommandLike._error_handlers[cls] = other_
+            return other_
+
+        return decorate
+
+    @classmethod
+    def set_help(
+        cls, text: t.Optional[str] = None
+    ) -> t.Optional[
+        t.Callable[
+            [t.Callable[[commands.Command, context.Context], str]], t.Callable[[commands.Command, context.Context], str]
+        ]
+    ]:
+        """
+        Sets the method for getting long help text for this command. This function can be called with the help text
+        to use or can be used as a second order decorator for a syncronous function to set a callable used to
+        get the help text for the command.
+
+        Args:
+            text (Optional[:obj:`str`]): Text to use as the long help text for this command. If not provided then
+                the function will be assumed to be a decorator.
+        """
+        if text is not None:
+
+            def return_text(_: commands.Command, __: context.Context, *, text_: str) -> str:
+                return text_
+
+            CommandLike._help_getters[cls] = functools.partial(return_text, text_=text)  # type: ignore
+            return None
+
+        def decorate(
+            func: t.Callable[[commands.Command, context.Context], str]
+        ) -> t.Callable[[commands.Command, context.Context], str]:
+            CommandLike._help_getters[cls] = func
+            return func
+
+        return decorate
