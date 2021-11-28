@@ -57,25 +57,6 @@ Please try to ensure that documentation is updated if you add any features acces
 If you use this library and like it, feel free to sign up to GitHub and star the project,
 it is greatly appreciated and lets me know that I'm going in the right direction!
 
-Templating
-==========
-
-Filament, when run through the command line, allows the generation of template projects using either the lightbulb decorator-based
-command system, or the filament class-based command system. To generate a template project you should run the below command
-in the directory of your choice:
-
-.. code-block:: bash
-
-   python -m filament -n
-
-This command will create a template using lightbulb's decorator-based command system. If you would rather use filament's
-class-based command system you should run the command with an additional argument: ``-s filament``. This means the command
-would be as follows:
-
-.. code-block:: bash
-
-   python -m filament -n -s filament
-
 Links
 =====
 
@@ -88,6 +69,7 @@ Links
 .. toctree::
    :maxdepth: 2
 
+   templating
    extensions
    general-api-reference
    utils-api-reference
