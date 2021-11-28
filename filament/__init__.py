@@ -19,4 +19,4 @@ from filament import commands
 from filament import utils
 from filament.commands import *
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
