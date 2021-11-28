@@ -15,10 +15,34 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with Filament. If not, see <https://www.gnu.org/licenses/>.
+import argparse
 import importlib
 import sys
 
 import filament
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-n", "--new", action="store_true", help="Create a template project in the current directory.")
+parser.add_argument(
+    "-s",
+    "--style",
+    default="lightbulb",
+    choices=["lightbulb", "filament"],
+    help="The command style to use in the created project. Defaults to 'lightbulb'",
+)
+
+args = parser.parse_args()
+if args.new:
+    if args.style not in ["lightbulb", "filament"]:
+        sys.stderr.write("Invalid value provided for '--style'. Must be one of: 'lightbulb', 'filament'")
+        sys.exit()
+
+    from filament import _t
+
+    _t.run(args)
+
+    sys.exit()
+
 
 sys.stderr.write(f"lightbulb-filament ({filament.__version__})\n")
 importlib.import_module("lightbulb.__main__")

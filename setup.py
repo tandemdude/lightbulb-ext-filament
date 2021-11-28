@@ -63,6 +63,8 @@ setup(
     packages=find_namespace_packages(include=[name + "*"]),
     license="LGPL-3.0-ONLY",
     install_requires=parse_requirements_file("requirements.txt"),
+    include_package_data=True,
+    package_data={"filament": ["*.txt", "*.nsx"]},
     python_requires=">=3.8.0,<3.11",
     classifiers=[
         "Development Status :: 3 - Alpha",
