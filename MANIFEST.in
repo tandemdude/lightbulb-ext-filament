@@ -1,0 +1,7 @@
+graft lightbulb-ext-filament
+include requirements.txt
+include setup.py
+include README.md
+include pyproject.toml
+recursive-include lightbulb *.txt *.nsx
+global-exclude *.py[cod]

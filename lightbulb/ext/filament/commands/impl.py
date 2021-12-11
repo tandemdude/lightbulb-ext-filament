@@ -25,6 +25,7 @@ import functools
 import typing as t
 
 import hikari
+
 import lightbulb
 from lightbulb import commands
 from lightbulb import context

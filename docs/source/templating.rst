@@ -8,7 +8,7 @@ in the directory of your choice:
 
 .. code-block:: bash
 
-   python -m filament -n
+   python -m lightbulb.ext.filament -n
 
 This command will create a template using lightbulb's decorator-based command system. If you would rather use filament's
 class-based command system you should run the command with an additional argument: ``-s filament``. This means the command
@@ -16,7 +16,7 @@ would be as follows:
 
 .. code-block:: bash
 
-   python -m filament -n -s filament
+   python -m lightbulb.ext.filament -n -s filament
 
 The above commands will create a project with the following structure:
 

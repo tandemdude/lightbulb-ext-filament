@@ -28,10 +28,11 @@ import time
 import traceback
 import typing as t
 
-import lightbulb
-from lightbulb import commands
 from lightbulb.utils import nav
 from lightbulb.utils import pag
+
+import lightbulb
+from lightbulb import commands
 
 __all__: t.Final[t.List[str]] = ["load", "unload"]
 

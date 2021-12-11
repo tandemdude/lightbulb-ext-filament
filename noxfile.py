@@ -20,7 +20,7 @@ import os
 import nox
 from nox import options
 
-PATH_TO_PROJECT = os.path.join(".", "filament")
+PATH_TO_PROJECT = os.path.join(".", "lightbulb", "ext", "filament")
 SCRIPT_PATHS = [
     PATH_TO_PROJECT,
     "noxfile.py",

@@ -17,7 +17,7 @@ Example:
 
     import lightbulb
     from lightbulb import commands
-    import filament
+    from lightbulb.ext import filament
 
     class EchoCommand(filament.CommandLike):
         # This defines the command types that this command will implement

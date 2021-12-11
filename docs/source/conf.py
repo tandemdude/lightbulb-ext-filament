@@ -14,7 +14,7 @@ import os
 import re
 import sys
 
-sys.path.insert(0, os.path.abspath(os.path.join("..", "..")))
+sys.path.insert(0, os.path.abspath(os.path.join("..", "..", "lightbulb", "ext")))
 sys.setrecursionlimit(1500)
 
 
@@ -24,7 +24,7 @@ project = "Filament"
 copyright = "2020-present, tandemdude"
 author = "tandemdude"
 
-with open("../../filament/__init__.py") as fp:
+with open("../../lightbulb/ext/filament/__init__.py") as fp:
     file = fp.read()
 version = re.search(r"__version__ = \"([^\"]+)", file).group(1)
 release = version

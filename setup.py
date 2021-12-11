@@ -20,11 +20,11 @@ import os
 import types
 import re
 
-name = "filament"
+name = "lightbulb"
 
 
 def parse_meta():
-    with open(os.path.join(name, "__init__.py")) as fp:
+    with open(os.path.join("lightbulb", "ext", "filament", "__init__.py")) as fp:
         code = fp.read()
 
     token_pattern = re.compile(r"^__(?P<key>\w+)?__\s*=\s*(?P<quote>(?:'{3}|\"{3}|'|\"))(?P<value>.*?)(?P=quote)", re.M)
@@ -52,7 +52,7 @@ def parse_requirements_file(path):
 meta = parse_meta()
 
 setup(
-    name="lightbulb-filament",
+    name="lightbulb-ext-filament",
     version=meta.version,
     description="Various add-ons, extensions and utilities for hikari-lightbulb",
     long_description=long_description(),
@@ -64,7 +64,6 @@ setup(
     license="LGPL-3.0-ONLY",
     install_requires=parse_requirements_file("requirements.txt"),
     include_package_data=True,
-    package_data={"filament": ["*.txt", "*.nsx"]},
     python_requires=">=3.8.0,<3.11",
     classifiers=[
         "Development Status :: 3 - Alpha",
