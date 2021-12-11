@@ -19,3 +19,10 @@ from filament.utils import misc
 from filament.utils import shorthand
 from filament.utils.misc import *
 from filament.utils.shorthand import *
+
+__all__ = [
+    "pass_options",
+    "prefix_command",
+    "slash_command",
+    "prefix_slash_command",
+]
