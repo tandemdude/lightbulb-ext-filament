@@ -15,6 +15,6 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with Filament. If not, see <https://www.gnu.org/licenses/>.
-from filament.commands.impl import *
+from .impl import *
 
 __all__ = ["opt", "option", "CommandLike"]

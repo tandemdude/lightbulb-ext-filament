@@ -19,7 +19,7 @@ import argparse
 import importlib
 import sys
 
-import filament
+from . import __version__
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-n", "--new", action="store_true", help="Create a template project in the current directory.")
@@ -37,12 +37,12 @@ if args.new:
         sys.stderr.write("Invalid value provided for '--style'. Must be one of: 'lightbulb', 'filament'")
         sys.exit()
 
-    from filament import _t
+    from . import _t
 
     _t.run(args)
 
     sys.exit()
 
 
-sys.stderr.write(f"lightbulb-filament ({filament.__version__})\n")
+sys.stderr.write(f"lightbulb-filament ({__version__})\n")
 importlib.import_module("lightbulb.__main__")
