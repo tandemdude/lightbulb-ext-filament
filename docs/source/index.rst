@@ -4,13 +4,13 @@
    contain the root `toctree` directive. REMEMBER TO FIX BADGES
 
 .. |b1| image:: https://img.shields.io/badge/code%20style-black-000000.svg
-.. |b2| image:: https://img.shields.io/pypi/v/lightbulb-filament.svg
-.. |b3| image:: https://img.shields.io/pypi/pyversions/lightbulb-filament
+.. |b2| image:: https://img.shields.io/pypi/v/lightbulb-ext-filament.svg
+.. |b3| image:: https://img.shields.io/pypi/pyversions/lightbulb-ext-filament
 .. |b5| image:: https://img.shields.io/readthedocs/filament
 .. |b6| image:: https://img.shields.io/badge/license-LGPL--3.0-brightgreen
-.. |b7| image:: https://img.shields.io/github/stars/tandemdude/filament
-.. |b8| image:: https://img.shields.io/github/forks/tandemdude/filament
-.. |b9| image:: https://img.shields.io/pypi/status/lightbulb-filament
+.. |b7| image:: https://img.shields.io/github/stars/tandemdude/lightbulb-ext-filament
+.. |b8| image:: https://img.shields.io/github/forks/tandemdude/lightbulb-ext-filament
+.. |b9| image:: https://img.shields.io/pypi/status/lightbulb-ext-filament
 
 Filament
 ========
