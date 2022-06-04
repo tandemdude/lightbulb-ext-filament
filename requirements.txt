@@ -1,2 +1,2 @@
-hikari-lightbulb~=2.2.0
+hikari-lightbulb>=2.2.2,<3.0.0
 nusex==1.2.4
