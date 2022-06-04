@@ -25,4 +25,4 @@ __all__ = [
     "CommandLike",
 ]
 
-__version__ = "0.1.2.post0"
+__version__ = "0.1.3"

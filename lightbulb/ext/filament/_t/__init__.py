@@ -21,37 +21,22 @@ __all__ = ["run"]
 
 import pathlib
 import typing as t
-from unittest import mock
 
-from nusex import constants
-from nusex.cli.commands import deploy
+from nusex.api import template
+from nusex.api import profile
 
 if t.TYPE_CHECKING:
     from argparse import Namespace
 
-PLACEHOLDER_DATA = {
-    "starting_version": "0.1.0",
-    "default_description": "Simple template for a hikari-lightbulb discord bot.",
-    "git_profile_url": "https://github.com/tandemdude",
-    "author_email": "tandemdude1@gmail.com",
-    "author_name": "tandemdude",
-    "preferred_license": "unlicense",
-}
+PROFILE = profile.Profile(
+    "default",
+    author_name="tandemdude",
+    author_email="tandemdude1@gmail.com",
+    preferred_license="unlicense",
+    starting_version="0.1.0",
+)
 
 
 def run(args: Namespace) -> None:
-    """
-    This is an evil hack to get nusex to deploy the template without first initialising nusex
-    and without any of the files being in the correct directories.
-    """
-    # We need to mock Profile out of nusex so we can replace the profile's data with our own
-    # so that nusex will run deploy without it first being initialised
-    with mock.patch("nusex.template.Profile") as mock_profile:
-        mock_profile.return_value = mock_profile
-        mock_profile.current.return_value = PLACEHOLDER_DATA
-
-        # Change the directories to our local template directory because nusex init takes too long
-        constants.LICENSE_DIR = pathlib.Path(".")
-        constants.TEMPLATE_DIR = pathlib.Path(".")
-
-        deploy.run(f"{args.style}_bot", f"{args.style}_bot", False, True)
+    tp = template.Template.from_disk(f"{args.style}_bot", from_dir=pathlib.Path(__file__[:-11]))
+    tp.deploy(pathlib.Path("."), project_name=f"{args.style}_bot", profile=PROFILE)
