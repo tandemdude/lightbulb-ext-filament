@@ -78,7 +78,7 @@ Creating groups and subcommands is relatively simple. You need to first create a
 .. code-block:: python
 
     from lightbulb import commands
-    import filament
+    from lightbulb.ext import filament
 
     class FooGroup(filament.CommandLike):
         # Define that this command implements SlashCommandGroup
@@ -97,7 +97,7 @@ subcommand class **must** implement the appropriate command type, which in this 
 
     import lightbulb
     from lightbulb import commands
-    import filament
+    from lightbulb.ext import filament
 
     @FooGroup.child
     class BarSubcommand(filament.CommandLike):
