@@ -64,7 +64,7 @@ setup(
     license="LGPL-3.0-ONLY",
     install_requires=parse_requirements_file("requirements.txt"),
     include_package_data=True,
-    python_requires=">=3.8.0,<3.11",
+    python_requires=">=3.8.0,<3.12",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Framework :: AsyncIO",
